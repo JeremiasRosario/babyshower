@@ -1,65 +1,162 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState } from 'react';
+import { VALID_GUESTS, GIFT_LIST } from '@/lib/constants';
+import { RSVPStatus } from '@/lib/types';
+import { FloatingShapes } from '@/components/FloatingShapes';
+import { GiftCard } from '@/components/GiftCard';
+import { RSVPSection } from '@/components/RSVPSection';
 
 export default function Home() {
+  const [accessCode, setAccessCode] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [guestName, setGuestName] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [rsvpStatus, setRsvpStatus] = useState<RSVPStatus>(null);
+  const [hasConfirmedRsvp, setHasConfirmedRsvp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setLoginError('');
+
+    setTimeout(() => {
+      const name = VALID_GUESTS[accessCode.toUpperCase()];
+      if (name) {
+        setGuestName(name);
+        setIsLoggedIn(true);
+      } else {
+        setLoginError('Código no válido. Por favor, verifica tu invitación.');
+      }
+      setIsLoading(false);
+    }, 800);
+  };
+
+  const handleConfirmRSVP = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setHasConfirmedRsvp(true);
+      setIsLoading(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1000);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="min-h-screen relative font-['Quicksand'] selection:bg-rose-100 overflow-x-hidden">
+      <FloatingShapes />
+      
+      <div className="relative z-10 container mx-auto px-4 py-12 flex flex-col items-center">
+        
+        {!isLoggedIn ? (
+          /* Login Section with Paper Cloud Style */
+          <div className="max-w-md w-full mt-10 lg:mt-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="relative mb-12 flex justify-center">
+              {/* Smiling Cloud UI Element */}
+              <div className="paper-shadow bg-white rounded-full px-12 py-8 relative animate-float">
+                <div className="absolute -top-4 right-6 rotate-12">
+                   <svg width="30" height="40" viewBox="0 0 50 50" fill="#E6B325">
+                     <path d="M25 0 L30 18 L50 25 L30 32 L25 50 L20 32 L0 25 L20 18 Z" />
+                   </svg>
+                </div>
+                {/* Face */}
+                <div className="flex flex-col items-center">
+                   <div className="flex gap-6 mb-2">
+                      <div className="w-5 h-1 bg-slate-800 rounded-full"></div>
+                      <div className="w-5 h-1 bg-slate-800 rounded-full"></div>
+                   </div>
+                   <div className="w-10 h-5 border-b-2 border-slate-800 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mb-8">
+              <h1 className="text-5xl md:text-6xl font-cursive text-slate-800 mb-2">Baby shower</h1>
+              <p className="text-slate-600 font-medium tracking-widest uppercase text-xs">Bienvenido a nuestro sueño</p>
+            </div>
+
+            <form onSubmit={handleLogin} className="bg-white/70 backdrop-blur-xl p-10 rounded-[3rem] shadow-2xl border border-white/50">
+              <div className="mb-8">
+                <label className="block text-slate-500 font-bold mb-3 ml-1 text-sm uppercase tracking-widest">Código Único</label>
+                <input
+                  type="text"
+                  value={accessCode}
+                  onChange={(e) => setAccessCode(e.target.value)}
+                  placeholder="INGRESA CÓDIGO"
+                  className="w-full px-6 py-5 rounded-3xl border-2 border-sky-100 focus:border-sky-300 focus:outline-none transition-all text-center text-xl uppercase tracking-[0.2em] font-bold text-slate-700 placeholder:text-slate-300"
+                  required
+                />
+              </div>
+
+              {loginError && (
+                <p className="text-red-400 text-sm text-center mb-6 font-medium bg-red-50/50 py-3 rounded-2xl border border-red-100/50">
+                  {loginError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-[#E991A5] hover:bg-[#d87a8f] text-white font-bold py-5 rounded-3xl transition-all shadow-xl shadow-rose-200 active:scale-95 disabled:opacity-50 text-lg uppercase tracking-widest"
+              >
+                {isLoading ? 'Entrando...' : 'Ingresar'}
+              </button>
+            </form>
+          </div>
+        ) : !hasConfirmedRsvp ? (
+          /* RSVP Section */
+          <div className="animate-in fade-in zoom-in duration-700 w-full max-w-2xl">
+             <div className="text-center mb-12">
+                <p className="text-slate-500 uppercase tracking-widest text-sm mb-4">Para nuestro invitado especial</p>
+                <h1 className="text-5xl font-cursive text-slate-800 mb-2">{guestName}</h1>
+                <div className="w-24 h-1 bg-[#E6B325]/40 mx-auto rounded-full mt-4"></div>
+             </div>
+             <RSVPSection 
+               status={rsvpStatus} 
+               onSelect={setRsvpStatus} 
+               onSubmit={handleConfirmRSVP}
+             />
+          </div>
+        ) : (
+          /* Gift Registry Dashboard */
+          <div className="animate-in fade-in slide-in-from-top-4 duration-700 w-full">
+            <header className="text-center mb-16">
+              <h1 className="text-6xl md:text-7xl font-cursive text-slate-800 mb-4">Lista de Regalos</h1>
+              <p className="max-w-2xl mx-auto text-slate-600 text-lg px-4 font-light">
+                ¡Gracias por confirmar tu asistencia, <strong>{guestName}</strong>! 
+                Si deseas hacernos un presente, aquí tienes nuestra selección de favoritos:
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {GIFT_LIST.map((gift) => (
+                <GiftCard key={gift.id} gift={gift} />
+              ))}
+            </div>
+
+            <footer className="mt-24 text-center pb-20">
+              <div className="inline-block paper-shadow bg-white rounded-full p-6 animate-sway mb-10">
+                <span className="text-4xl">🍼</span>
+              </div>
+              <p className="text-slate-800 font-cursive text-4xl mb-4">¡Te esperamos con amor!</p>
+              <div className="flex justify-center gap-4 opacity-50">
+                 <div className="w-2 h-2 rounded-full bg-[#F4B4C1]"></div>
+                 <div className="w-2 h-2 rounded-full bg-[#E6B325]"></div>
+                 <div className="w-2 h-2 rounded-full bg-[#A66352]"></div>
+              </div>
+              <button 
+                onClick={() => {
+                  setIsLoggedIn(false);
+                  setHasConfirmedRsvp(false);
+                }}
+                className="mt-16 text-slate-500 hover:text-slate-800 text-sm transition-colors uppercase tracking-widest"
+              >
+                Cerrar sesión
+              </button>
+            </footer>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
