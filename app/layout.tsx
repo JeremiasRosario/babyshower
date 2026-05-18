@@ -45,10 +45,6 @@ export const metadata: Metadata = {
     description,
     images: ['/images/bunny-flowers.png'],
   },
-  icons: {
-    icon: '/images/bunny-flowers.png',
-    apple: '/images/bunny-flowers.png',
-  },
 };
 
 export default function RootLayout({
