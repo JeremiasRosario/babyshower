@@ -8,7 +8,8 @@
       "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\2.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\butterfly-1.png\")",
       "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\3.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\butterfly-2.png\")",
       "Bash(npx tsc *)",
-      "Bash(pnpm build *)"
+      "Bash(pnpm build *)",
+      "WebFetch(domain:www.amazon.com)"
     ]
   }
 }

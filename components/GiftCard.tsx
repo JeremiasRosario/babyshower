@@ -11,10 +11,18 @@ interface GiftCardProps {
   onRelease: (giftId: string) => Promise<void>;
 }
 
+const STORE_LABEL: Record<string, string> = {
+  amazon: 'Amazon',
+  bebemundo: 'Bebemundo',
+  other: 'Tienda',
+};
+
 export const GiftCard: React.FC<GiftCardProps> = ({ gift, alreadyReserved, onReserve, onRelease }) => {
   const [isWorking, setIsWorking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imgFailed, setImgFailed] = useState(false);
   const soldOut = gift.availableQuantity <= 0 && !alreadyReserved;
+  const showImage = Boolean(gift.imageUrl) && !imgFailed;
 
   const handleClick = async () => {
     setIsWorking(true);
@@ -35,13 +43,27 @@ export const GiftCard: React.FC<GiftCardProps> = ({ gift, alreadyReserved, onRes
   return (
     <div className="card-shadow bg-white rounded-3xl overflow-hidden border border-cream-deep flex flex-col transition-all hover:-translate-y-1 hover:card-shadow-lg">
       <div className="relative aspect-square bg-cream-deep/30">
-        <Image
-          src={gift.imageUrl}
-          alt={gift.name}
-          fill
-          unoptimized
-          className="object-contain p-4"
-        />
+        {showImage ? (
+          <Image
+            src={gift.imageUrl}
+            alt={gift.name}
+            fill
+            unoptimized
+            className="object-contain p-4"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-ink-soft/40 p-4">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M20 12v10H4V12" />
+              <path d="M2 7h20v5H2z" />
+              <path d="M12 22V7" />
+              <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
+              <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
+            </svg>
+            <p className="text-[10px] uppercase tracking-widest mt-3 text-center font-bold">Sin imagen</p>
+          </div>
+        )}
         <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 text-ink-soft text-[10px] font-bold rounded-full uppercase tracking-widest">
           {gift.category}
         </span>
@@ -55,6 +77,9 @@ export const GiftCard: React.FC<GiftCardProps> = ({ gift, alreadyReserved, onRes
           {soldOut
             ? 'No disponible'
             : `${gift.availableQuantity} disponible${gift.availableQuantity === 1 ? '' : 's'}`}
+        </span>
+        <span className="absolute bottom-3 left-3 px-2.5 py-1 bg-ink/80 text-cream text-[9px] font-bold rounded-full uppercase tracking-widest">
+          {STORE_LABEL[gift.store] ?? gift.store}
         </span>
       </div>
 
