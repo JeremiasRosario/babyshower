@@ -5,6 +5,8 @@ export interface Guest {
   firstName: string;
   lastName: string;
   rsvp: RSVPStatus;
+  adultsCount?: number;
+  childrenCount?: number;
   reservedGifts: string[];
   updatedAt?: number;
 }

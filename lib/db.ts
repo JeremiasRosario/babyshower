@@ -24,9 +24,16 @@ export async function findGuestByPhone(rawPhone: string): Promise<Guest | null> 
   return { phone, ...(snap.data() as Omit<Guest, 'phone'>) };
 }
 
-export async function setGuestRSVP(phone: string, rsvp: RSVPStatus): Promise<void> {
+export async function setGuestRSVP(
+  phone: string,
+  rsvp: RSVPStatus,
+  adultsCount = 0,
+  childrenCount = 0
+): Promise<void> {
   await updateDoc(doc(db(), 'guests', normalizePhone(phone)), {
     rsvp,
+    adultsCount: rsvp === 'yes' ? adultsCount : 0,
+    childrenCount: rsvp === 'yes' ? childrenCount : 0,
     updatedAt: Date.now(),
   });
 }

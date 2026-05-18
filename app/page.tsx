@@ -24,7 +24,11 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [pendingRsvp, setPendingRsvp] = useState<RSVPStatus>(null);
+  const [pendingAdults, setPendingAdults] = useState(1);
+  const [pendingChildren, setPendingChildren] = useState(0);
   const [isSubmittingRsvp, setIsSubmittingRsvp] = useState(false);
+  // Always show the RSVP card after login; flip after confirm in current session.
+  const [hasConfirmedThisSession, setHasConfirmedThisSession] = useState(false);
 
   const [gifts, setGifts] = useState<Gift[]>([]);
   const [giftsLoading, setGiftsLoading] = useState(true);
@@ -63,6 +67,9 @@ export default function Home() {
       }
       setGuest(found);
       setPendingRsvp(found.rsvp);
+      setPendingAdults(found.adultsCount && found.adultsCount > 0 ? found.adultsCount : 1);
+      setPendingChildren(found.childrenCount ?? 0);
+      setHasConfirmedThisSession(false);
     } catch (e) {
       setLoginError(
         e instanceof Error ? e.message : 'No pudimos conectar. Intenta de nuevo en un momento.'
@@ -76,8 +83,14 @@ export default function Home() {
     if (!guest || !pendingRsvp) return;
     setIsSubmittingRsvp(true);
     try {
-      await setGuestRSVP(guest.phone, pendingRsvp);
-      setGuest({ ...guest, rsvp: pendingRsvp });
+      await setGuestRSVP(guest.phone, pendingRsvp, pendingAdults, pendingChildren);
+      setGuest({
+        ...guest,
+        rsvp: pendingRsvp,
+        adultsCount: pendingRsvp === 'yes' ? pendingAdults : 0,
+        childrenCount: pendingRsvp === 'yes' ? pendingChildren : 0,
+      });
+      setHasConfirmedThisSession(true);
     } catch (e) {
       console.error(e);
     } finally {
@@ -104,8 +117,8 @@ export default function Home() {
     return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b));
   }, [gifts]);
 
-  const hasConfirmedRsvp = guest?.rsvp != null;
   const reservedIds = new Set(guest?.reservedGifts ?? []);
+  const hasPreviousResponse = guest?.rsvp != null;
 
   return (
     <div className="min-h-screen relative selection:bg-rose-soft/40">
@@ -120,14 +133,19 @@ export default function Home() {
             error={loginError}
             isLoading={isLoading}
           />
-        ) : !hasConfirmedRsvp ? (
+        ) : !hasConfirmedThisSession ? (
           <div className="animate-in fade-in zoom-in duration-700 w-full max-w-2xl">
             <HeroIntro guestName={`${guest.firstName} ${guest.lastName}`} />
             <RSVPSection
               status={pendingRsvp}
               onSelect={setPendingRsvp}
+              adultsCount={pendingAdults}
+              onAdultsChange={setPendingAdults}
+              childrenCount={pendingChildren}
+              onChildrenChange={setPendingChildren}
               onSubmit={handleConfirmRSVP}
               isSubmitting={isSubmittingRsvp}
+              hasPreviousResponse={hasPreviousResponse}
             />
           </div>
         ) : (
