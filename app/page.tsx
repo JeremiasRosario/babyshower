@@ -238,9 +238,14 @@ function LoginCard({
         <p className="text-ink-soft mt-3 italic text-sm">
           Te invitamos a celebrar la llegada de nuestra dulzura.
         </p>
-        <p className="text-ink-soft text-xs mt-2 tracking-widest uppercase">
-          {EVENT.date} · {EVENT.location}
-        </p>
+        <a
+          href={EVENT.location.addressLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-ink-soft text-xs mt-2 tracking-widest uppercase"
+        >
+          {EVENT.date} · {EVENT.location.name}
+        </a>
       </div>
 
       <form
@@ -312,8 +317,19 @@ function HeroBanner({ guest }: { guest: Guest }) {
       </p>
       <h1 className="text-6xl sm:text-7xl font-cursive text-ink leading-none mb-3">{EVENT.babyName}</h1>
       <p className="text-ink-soft text-xs tracking-widest uppercase">
-        {EVENT.date} · {EVENT.location}
+        {EVENT.date} · {EVENT.location.name}
       </p>
+      <button className="mt-4 px-6 py-3 rounded-full bg-ink text-cream font-bold uppercase tracking-widest text-xs hover:bg-ink/90 transition-colors">
+    <a
+        href={EVENT.location.addressLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white text-xs mt-2 tracking-widest uppercase"
+      >
+        Ver en el mapa  
+      </a>
+      </button>
+      
       <p className="mt-6 text-ink-soft text-sm sm:text-base">
         Gracias por confirmar, <strong className="text-ink">{guest.firstName}</strong>. 🌸
       </p>

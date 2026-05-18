@@ -35,11 +35,21 @@
 
 body {
   background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-quicksand), Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: url('/images/bg-gingham.png');
   background-size: 320px;
   background-repeat: repeat;
-  color: var(--ink);
-  font-family: var(--font-quicksand), Arial, Helvetica, sans-serif;
+  opacity: 0.70;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .font-cursive {

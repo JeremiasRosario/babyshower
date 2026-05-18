@@ -5,12 +5,12 @@ export const FloatingShapes: React.FC = () => {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Floral corner — top left */}
-      <div className="absolute -top-6 -left-6 w-48 sm:w-64 md:w-80 opacity-80">
+      <div className="absolute -top-10 -left-10 w-48 sm:w-64 md:w-80 opacity-80 rotate-180">
         <Image src="/images/floral-corner.png" alt="" width={400} height={400} priority />
       </div>
 
       {/* Floral corner — bottom right (rotated) */}
-      <div className="absolute -bottom-10 -right-10 w-48 sm:w-64 md:w-80 opacity-70 rotate-180">
+      <div className="absolute -bottom-10 -right-10 w-48 sm:w-64 md:w-80 opacity-70 ">
         <Image src="/images/floral-corner.png" alt="" width={400} height={400} />
       </div>
 
