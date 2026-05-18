@@ -5,49 +5,50 @@ interface RSVPSectionProps {
   status: RSVPStatus;
   onSelect: (status: RSVPStatus) => void;
   onSubmit: () => void;
+  isSubmitting?: boolean;
 }
 
-export const RSVPSection: React.FC<RSVPSectionProps> = ({ status, onSelect, onSubmit }) => {
+export const RSVPSection: React.FC<RSVPSectionProps> = ({ status, onSelect, onSubmit, isSubmitting }) => {
   return (
-    <div className="max-w-md mx-auto bg-white/80 backdrop-blur-xl p-10 rounded-[3rem] border border-white/50 shadow-2xl text-center">
-      <h2 className="text-3xl font-cursive text-slate-800 mb-3">¿Podrás acompañarnos?</h2>
-      <p className="text-slate-500 mb-10 text-sm tracking-wide">Tu presencia haría este día inolvidable.</p>
-      
-      <div className="grid grid-cols-1 gap-4 mb-10">
+    <div className="max-w-md mx-auto bg-white/90 backdrop-blur-xl p-8 sm:p-10 rounded-[2.5rem] border border-cream-deep card-shadow-lg text-center">
+      <h2 className="text-3xl font-cursive text-ink mb-2">¿Podrás acompañarnos?</h2>
+      <p className="text-ink-soft mb-8 text-sm">Tu presencia haría este día inolvidable.</p>
+
+      <div className="grid grid-cols-1 gap-3 mb-8">
         <button
           onClick={() => onSelect('yes')}
-          className={`group py-5 px-8 rounded-3xl font-bold transition-all duration-500 flex items-center justify-between border-2 ${
-            status === 'yes' 
-              ? 'bg-[#E991A5] border-[#E991A5] text-white shadow-xl scale-[1.02]' 
-              : 'bg-white border-sky-100 text-slate-400 hover:border-[#E991A5] hover:text-[#E991A5]'
+          className={`group py-4 px-6 rounded-full font-bold uppercase tracking-widest text-sm transition-all border-2 flex items-center justify-between ${
+            status === 'yes'
+              ? 'bg-rose-soft border-rose-soft text-white shadow-lg'
+              : 'bg-white border-cream-deep text-ink-soft hover:border-rose-soft hover:text-rose-deep'
           }`}
         >
-          <span className="text-lg">Sí, ¡allí estaré!</span>
-          <span className="text-2xl group-hover:scale-125 transition-transform">✨</span>
+          <span>Sí, ¡allí estaré!</span>
+          <span className="text-lg">🌸</span>
         </button>
         <button
           onClick={() => onSelect('no')}
-          className={`group py-5 px-8 rounded-3xl font-bold transition-all duration-500 flex items-center justify-between border-2 ${
-            status === 'no' 
-              ? 'bg-slate-400 border-slate-400 text-white shadow-xl scale-[1.02]' 
-              : 'bg-white border-sky-100 text-slate-400 hover:border-slate-300 hover:text-slate-500'
+          className={`group py-4 px-6 rounded-full font-bold uppercase tracking-widest text-sm transition-all border-2 flex items-center justify-between ${
+            status === 'no'
+              ? 'bg-ink-soft border-ink-soft text-white shadow-lg'
+              : 'bg-white border-cream-deep text-ink-soft hover:border-ink-soft'
           }`}
         >
-          <span className="text-lg">No podré asistir</span>
-          <span className="text-2xl group-hover:scale-125 transition-transform">🤍</span>
+          <span>No podré asistir</span>
+          <span className="text-lg">🤍</span>
         </button>
       </div>
 
       <button
-        disabled={!status}
+        disabled={!status || isSubmitting}
         onClick={onSubmit}
-        className={`w-full py-5 rounded-3xl font-bold text-lg transition-all shadow-xl uppercase tracking-widest ${
-          status 
-            ? 'bg-[#E6B325] hover:bg-[#cf9e1d] text-white cursor-pointer active:scale-95' 
-            : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+        className={`w-full py-4 rounded-full font-bold uppercase tracking-widest text-sm transition-all ${
+          status && !isSubmitting
+            ? 'bg-gold text-white hover:bg-gold/90 shadow-lg active:scale-[0.98]'
+            : 'bg-cream-deep text-ink-soft cursor-not-allowed'
         }`}
       >
-        Confirmar
+        {isSubmitting ? 'Enviando...' : 'Confirmar'}
       </button>
     </div>
   );

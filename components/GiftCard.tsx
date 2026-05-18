@@ -1,75 +1,103 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Gift } from '@/lib/types';
 
 interface GiftCardProps {
   gift: Gift;
+  alreadyReserved: boolean;
+  onReserve: (giftId: string) => Promise<void>;
+  onRelease: (giftId: string) => Promise<void>;
 }
 
-export const GiftCard: React.FC<GiftCardProps> = ({ gift }) => {
-  return (
-    <div className="paper-shadow bg-white/90 backdrop-blur-md rounded-[2.5rem] overflow-hidden group border border-white/50 transition-all duration-500 hover:-translate-y-2">
-      <div className="relative h-60 overflow-hidden">
-        <Image 
-          src={gift.imageUrl} 
-          alt={gift.name} 
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-1000"
-        />
-        <div className="absolute top-5 right-5">
-          <span className="px-4 py-2 bg-white/90 text-slate-700 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-sm">
-            {gift.category}
-          </span>
-        </div>
-      </div>
-      
-      <div className="p-8">
-        <h3 className="text-2xl font-cursive text-slate-800 mb-3 group-hover:text-[#E991A5] transition-colors">
-          {gift.name}
-        </h3>
-        <p className="text-slate-500 text-sm mb-8 leading-relaxed font-light">
-          {gift.description}
-        </p>
-        
-        <div className="space-y-3">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mb-4 flex items-center gap-2">
-            <span className="w-4 h-px bg-slate-200"></span>
-            Ver en tienda
-            <span className="w-4 h-px bg-slate-200"></span>
-          </p>
-          <div className="flex flex-col gap-3">
-            <a 
-              href={gift.link} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center justify-between py-4 px-6 bg-[#FF9900]/5 hover:bg-[#FF9900]/10 text-[#232F3E] font-bold rounded-2xl transition-all border border-[#FF9900]/10 group/btn"
-            >
-              <div className="flex items-center gap-3">
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-                </svg>
-                <span className="text-sm uppercase tracking-wider">Amazon</span>
-              </div>
-              <svg className="w-4 h-4 opacity-50 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
+export const GiftCard: React.FC<GiftCardProps> = ({ gift, alreadyReserved, onReserve, onRelease }) => {
+  const [isWorking, setIsWorking] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const soldOut = gift.availableQuantity <= 0 && !alreadyReserved;
 
-            <a 
-              href="https://bebemundo.com.do/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center justify-between py-4 px-6 bg-sky-50/50 hover:bg-sky-100/50 text-sky-700 font-bold rounded-2xl transition-all border border-sky-100 group/btn"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-xl">👶</span>
-                <span className="text-sm uppercase tracking-wider">Bebemundo</span>
-              </div>
-              <svg className="w-4 h-4 opacity-50 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+  const handleClick = async () => {
+    setIsWorking(true);
+    setError(null);
+    try {
+      if (alreadyReserved) {
+        await onRelease(gift.id);
+      } else {
+        await onReserve(gift.id);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudo completar la acción.');
+    } finally {
+      setIsWorking(false);
+    }
+  };
+
+  return (
+    <div className="card-shadow bg-white rounded-3xl overflow-hidden border border-cream-deep flex flex-col transition-all hover:-translate-y-1 hover:card-shadow-lg">
+      <div className="relative aspect-square bg-cream-deep/30">
+        <Image
+          src={gift.imageUrl}
+          alt={gift.name}
+          fill
+          unoptimized
+          className="object-contain p-4"
+        />
+        <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 text-ink-soft text-[10px] font-bold rounded-full uppercase tracking-widest">
+          {gift.category}
+        </span>
+        <span
+          className={`absolute top-3 right-3 px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-widest ${
+            soldOut
+              ? 'bg-ink-soft/20 text-ink-soft'
+              : 'bg-sage/30 text-sage-deep'
+          }`}
+        >
+          {soldOut
+            ? 'No disponible'
+            : `${gift.availableQuantity} disponible${gift.availableQuantity === 1 ? '' : 's'}`}
+        </span>
+      </div>
+
+      <div className="p-5 flex-1 flex flex-col">
+        <h3 className="font-cursive text-2xl text-ink leading-tight mb-1">{gift.name}</h3>
+        {gift.size && (
+          <p className="text-xs text-ink-soft mb-1">
+            <span className="font-bold uppercase tracking-wider">Talla:</span> {gift.size}
+          </p>
+        )}
+        {gift.description && (
+          <p className="text-sm text-ink-soft font-light mb-4 leading-relaxed">{gift.description}</p>
+        )}
+
+        <div className="mt-auto flex flex-col gap-2">
+          <a
+            href={gift.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center py-3 rounded-full text-xs font-bold uppercase tracking-widest border-2 border-rose text-rose-deep bg-white hover:bg-rose/10 transition-colors"
+          >
+            Ver Tienda
+          </a>
+          <button
+            onClick={handleClick}
+            disabled={isWorking || (soldOut && !alreadyReserved)}
+            className={`py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              alreadyReserved
+                ? 'bg-sage-deep text-white hover:bg-sage-deep/90'
+                : 'bg-rose-soft text-white hover:bg-rose'
+            }`}
+          >
+            {isWorking
+              ? 'Procesando...'
+              : alreadyReserved
+              ? 'Apartado · Liberar'
+              : soldOut
+              ? 'No disponible'
+              : 'Apartar'}
+          </button>
+          {error && (
+            <p className="text-xs text-rose-deep text-center mt-1 font-medium">{error}</p>
+          )}
         </div>
       </div>
     </div>

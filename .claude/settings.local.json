@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm add *)",
+      "Bash(mkdir \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\")",
+      "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\1.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\bunny-eggs.png\")",
+      "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\4.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\bunny-flowers.png\")",
+      "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\2.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\butterfly-1.png\")",
+      "Bash(cp \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\INSUMOS\\\\PNG\\\\3.png\" \"C:\\\\Users\\\\Jeremias Rosario\\\\Desktop\\\\DEV\\\\baby-shower-guest\\\\public\\\\images\\\\butterfly-2.png\")",
+      "Bash(npx tsc *)",
+      "Bash(pnpm build *)"
+    ]
+  }
+}

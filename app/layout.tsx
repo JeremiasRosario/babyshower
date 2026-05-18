@@ -15,8 +15,8 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Baby Shower - Invitación",
-  description: "Bienvenido a nuestro sueño",
+  title: "Baby Shower · Olivia",
+  description: "Te invitamos a celebrar la llegada de nuestra dulzura.",
 };
 
 export default function RootLayout({

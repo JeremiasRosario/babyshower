@@ -1,153 +1,96 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fef6f8;
-  --foreground: #171717;
+  /* Olivia palette — cream, dusty rose, sage, muted gold */
+  --background: #faf3ec;
+  --foreground: #5b4636;
+  --cream: #faf3ec;
+  --cream-deep: #f0e4d4;
+  --rose: #e3a8ab;
+  --rose-soft: #f2b4c0;
+  --rose-deep: #c98a8e;
+  --sage: #bcc7a8;
+  --sage-deep: #8da177;
+  --gold: #c9a96e;
+  --ink: #5b4636;
+  --ink-soft: #8a7a68;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-rose: var(--rose);
+  --color-rose-soft: var(--rose-soft);
+  --color-rose-deep: var(--rose-deep);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-gold: var(--gold);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
   --font-quicksand: var(--font-quicksand);
   --font-dancing-script: var(--font-dancing-script);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #fef6f8;
-    --foreground: #171717;
-  }
-}
-
 body {
-  background: linear-gradient(180deg, #fef6f8 0%, #e8f4ff 100%);
-  color: var(--foreground);
+  background-color: var(--cream);
+  background-image: url('/images/bg-gingham.png');
+  background-size: 320px;
+  background-repeat: repeat;
+  color: var(--ink);
   font-family: var(--font-quicksand), Arial, Helvetica, sans-serif;
 }
 
-/* Custom Font Classes */
 .font-cursive {
   font-family: var(--font-dancing-script), cursive;
 }
 
-/* Paper Shadow Effect */
-.paper-shadow {
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.07),
-    0 2px 4px rgba(0, 0, 0, 0.07),
-    0 4px 8px rgba(0, 0, 0, 0.07),
-    0 8px 16px rgba(0, 0, 0, 0.07),
-    0 16px 32px rgba(0, 0, 0, 0.07);
+/* Soft paper shadow */
+.card-shadow {
+  box-shadow:
+    0 1px 2px rgba(120, 82, 60, 0.06),
+    0 4px 14px rgba(120, 82, 60, 0.08),
+    0 16px 32px rgba(120, 82, 60, 0.06);
 }
 
-/* Hanging Line Style */
-.hanging-line {
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.05) 100%
-  );
-  border-radius: 2px;
+.card-shadow-lg {
+  box-shadow:
+    0 2px 6px rgba(120, 82, 60, 0.08),
+    0 12px 28px rgba(120, 82, 60, 0.10),
+    0 28px 60px rgba(120, 82, 60, 0.08);
 }
 
-/* Custom Animations */
+/* Animations */
 @keyframes sway {
-  0%, 100% {
-    transform: translateX(0) rotate(0deg);
-  }
-  25% {
-    transform: translateX(-3px) rotate(-1deg);
-  }
-  75% {
-    transform: translateX(3px) rotate(1deg);
-  }
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-4px) rotate(-1.5deg); }
+  75% { transform: translateX(4px) rotate(1.5deg); }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.animate-sway {
-  animation: sway 4s ease-in-out infinite;
+@keyframes flutter {
+  0%, 100% { transform: translate(0, 0) rotate(-5deg); }
+  50% { transform: translate(8px, -12px) rotate(5deg); }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
+.animate-sway { animation: sway 5s ease-in-out infinite; }
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-flutter { animation: flutter 6s ease-in-out infinite; }
 
-/* Animate In Classes */
-.animate-in {
-  animation-fill-mode: both;
-}
+.animate-in { animation-fill-mode: both; }
+.fade-in { animation-name: fadeIn; }
+.slide-in-from-bottom-8 { animation-name: slideInFromBottom; }
+.slide-in-from-top-4 { animation-name: slideInFromTop; }
+.zoom-in { animation-name: zoomIn; }
+.duration-700 { animation-duration: 700ms; }
+.duration-1000 { animation-duration: 1000ms; }
 
-.fade-in {
-  animation-name: fadeIn;
-}
-
-.slide-in-from-bottom-8 {
-  animation-name: slideInFromBottom;
-}
-
-.slide-in-from-top-4 {
-  animation-name: slideInFromTop;
-}
-
-.zoom-in {
-  animation-name: zoomIn;
-}
-
-.duration-700 {
-  animation-duration: 700ms;
-}
-
-.duration-1000 {
-  animation-duration: 1000ms;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(2rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInFromBottom { from { opacity: 0; transform: translateY(2rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideInFromTop { from { opacity: 0; transform: translateY(-1rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
