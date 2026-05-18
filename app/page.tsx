@@ -211,16 +211,28 @@ export default function Home() {
                 <div className="w-2 h-2 rounded-full bg-gold" />
                 <div className="w-2 h-2 rounded-full bg-sage" />
               </div>
-              <button
-                onClick={() => {
-                  setGuest(null);
-                  setPhoneInput('');
-                  setPendingRsvp(null);
-                }}
-                className="text-ink-soft hover:text-ink text-xs transition-colors uppercase tracking-widest"
-              >
-                Cerrar sesión
-              </button>
+              <div className="flex items-center justify-center gap-6">
+                <button
+                  onClick={() => setHasConfirmedThisSession(false)}
+                  className="text-ink-soft hover:text-ink text-xs transition-colors uppercase tracking-widest"
+                >
+                  Modificar respuesta
+                </button>
+                <span className="text-ink-soft/40">·</span>
+                <button
+                  onClick={() => {
+                    setGuest(null);
+                    setPhoneInput('');
+                    setPendingRsvp(null);
+                    setPendingAdults(1);
+                    setPendingChildren(0);
+                    setHasConfirmedThisSession(false);
+                  }}
+                  className="text-ink-soft hover:text-ink text-xs transition-colors uppercase tracking-widest"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </footer>
           </div>
         )}
@@ -275,16 +287,16 @@ function LoginCard({
         </label>
         <input
           type="tel"
-          inputMode="tel"
+          inputMode="numeric"
           autoComplete="tel"
           value={phoneInput}
-          onChange={(e) => setPhoneInput(e.target.value)}
-          placeholder="Ej. 809 555 1234"
+          onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, '').slice(0, 15))}
+          placeholder="Ej. 8095551234"
           className="w-full px-6 py-4 rounded-full border-2 border-cream-deep focus:border-rose focus:outline-none transition-all text-center text-lg tracking-widest text-ink placeholder:text-ink-soft/40 bg-white"
           required
         />
         <p className="text-[11px] text-ink-soft mt-3 text-center">
-          Tu número es tu llave de acceso. Lo usamos para confirmar tu lugar.
+          Solo dígitos. Puedes copiar y pegar — limpiamos cualquier formato automáticamente.
         </p>
 
         {error && (
