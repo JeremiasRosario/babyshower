@@ -14,7 +14,7 @@ import {
   subscribeToGuest,
 } from '@/lib/db';
 import { FloatingShapes } from '@/components/FloatingShapes';
-import { GiftCard } from '@/components/GiftCard';
+import { GiftListItem } from '@/components/GiftListItem';
 import { RSVPSection } from '@/components/RSVPSection';
 
 export default function Home() {
@@ -168,38 +168,44 @@ export default function Home() {
                     actualizan en tiempo real cuando alguien aparta un regalo.
                   </p>
                   <a
-                    href={EVENT.amazonRegistryUrl}
+                    href={EVENT.bebemundoRegistryUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block mt-6 px-6 py-3 rounded-full bg-ink text-cream font-bold uppercase tracking-widest text-xs hover:bg-ink/90 transition-colors"
                   >
-                    Ver lista Amazon completa →
+                    Ver lista Bebemundo completa →
                   </a>
                 </div>
 
                 {giftsLoading ? (
                   <p className="text-center text-ink-soft py-20">Cargando regalos...</p>
                 ) : (
-                  groupedGifts.map(([category, items]) => (
-                    <section key={category} className="mb-14">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="h-px flex-1 bg-cream-deep" />
-                        <h3 className="font-cursive text-2xl text-ink-soft">{category}</h3>
-                        <div className="h-px flex-1 bg-cream-deep" />
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {items.map((gift) => (
-                          <GiftCard
-                            key={gift.id}
-                            gift={gift}
-                            alreadyReserved={reservedIds.has(gift.id)}
-                            onReserve={handleReserve}
-                            onRelease={handleRelease}
-                          />
-                        ))}
-                      </div>
-                    </section>
-                  ))
+                  <div className="space-y-6 max-w-3xl mx-auto">
+                    {groupedGifts.map(([category, items]) => (
+                      <section key={category}>
+                        <div className="flex items-center gap-3 mb-2 px-1">
+                          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-ink-soft">
+                            {category}
+                          </span>
+                          <div className="h-px flex-1 bg-cream-deep" />
+                          <span className="text-[10px] text-ink-soft/50">
+                            {items.filter(g => g.availableQuantity > 0).length}/{items.length}
+                          </span>
+                        </div>
+                        <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-cream-deep overflow-hidden card-shadow divide-y divide-cream-deep/70">
+                          {items.map((gift) => (
+                            <GiftListItem
+                              key={gift.id}
+                              gift={gift}
+                              alreadyReserved={reservedIds.has(gift.id)}
+                              onReserve={handleReserve}
+                              onRelease={handleRelease}
+                            />
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
                 )}
               </>
             )}

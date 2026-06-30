@@ -23,6 +23,7 @@ export interface Gift {
   store: GiftStore;
   totalQuantity: number;
   availableQuantity: number;
+  price?: number;
   size?: string;
 }
 
